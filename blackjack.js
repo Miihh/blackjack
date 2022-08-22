@@ -3,31 +3,42 @@ let secondCard = getRandomCard();
 let drawnCards = [];
 let sum =  0;
 let blackjack = false;// in prima faza, playerul nu are blackjack, deci va fi false
-let stillInTheGame = false;
+let stillInTheGame = true;
 let gameMessage = [];
 let displayedCards = document.getElementById("your-cards");
 let infoMessage = document.getElementById("starting-message");
 let displayedSum = document.getElementById("your-sum");
 let newCardBtn = document.getElementById("new-card-btn");
 let startGameBtn = document.getElementById("start-game-btn");
+let newGameBtn = document.getElementById("new-game-btn");
 let playerStats = document.getElementById("player-stats");
 // o variabila nu poate fi folosita inainte de a fi definita. js citeste de sus in jos.
-// daca folosesti o variabila inainte de a fi definita, va aparea ca undefined.
+// daca folosesti o variabila inainte de a fi definita, va aparea ca undefined. 
+// ea trebuie declarata, apoi initializata
 
-// function hoisting - inseamna ca functiile pot fi scrise oricand, pentru ca js le "duce"
-// sus si le poti folosi chiar si la prima linie. nu toate functiile pot fi hoistuite, ci doar
-// cele scrise sub forma clasica. (arrow functions nu pot fi hoistuite- don't know, de cercetat???)
+
 
 console.log(drawnCards);
+let player = {
+    playerName: "Mihai",
+    playerChips: "200$",
+}
+
+playerStats.textContent = player.playerName + ": " + player.playerChips;
 
 
 // Game rules
+newCardBtn.disabled = true;
+newGameBtn.hidden = true;
 function startGame() {
-     stillInTheGame = true;
+    stillInTheGame = true;
      drawnCards = [firstCard,secondCard]
      sum =  firstCard + secondCard;
     renderGame();
     startGameBtn.disabled = true; 
+    newCardBtn.disabled = false;
+    newGameBtn.hidden = false;
+    newGameBtn.disabled = true;
 };
 // card randomizer - 
 function getRandomCard() {
@@ -39,9 +50,10 @@ function getRandomCard() {
     } else  {
         return randomGeneratedNumber;
     }
-}
-// stabilim logica jocului = daca genereaza un nr > 10=> 10( pt ca in bj, cartile din chita = 10)
+} 
+// stabilim logica jocului = daca genereaza un nr > 10=> 10( pt ca in bj, cartile din chinta = 10)
 //daca genereaza nr 1(adica AS) => ii dam valoarea de 11. Practic, va genera numere cuprinse intre 2-11
+
 // game starter
 function renderGame() {
     if (sum < 21) {
@@ -52,6 +64,7 @@ function renderGame() {
         }
         gameMessage = [sum + ". " + "Do you want to draw another card?🧐"];
         infoMessage.textContent = gameMessage;
+        stillInTheGame === true;
 
     } else if (sum === 21) {
         displayedSum.textContent = " Sum: " + sum;
@@ -59,18 +72,22 @@ function renderGame() {
         gameMessage = [sum + ". " + "Congratulations, you have Blackjack!🥳"];
         displayedCards.textContent = "Cards: " + drawnCards[0] + " " + drawnCards[1];
         infoMessage.textContent = gameMessage;
+        stillInTheGame === true;
+        newGameBtn.disabled = false;
     } else {
         displayedSum.textContent = " Sum: " + sum;
         stillInTheGame = false;
         gameMessage = [sum + ". " + "Sorry, you lose.🥲"];
         displayedCards.textContent = "Cards: " + drawnCards[0] + " " + drawnCards[1];
         infoMessage.textContent = gameMessage;
+        newGameBtn.disabled = false;
     }
 }
 
 function newCard() {
     let thirdCard = getRandomCard()
     if (stillInTheGame === true && blackjack === false) {
+        newCardBtn.disabled= false;
         sum += thirdCard;
         drawnCards.push(thirdCard);
         renderGame();
@@ -87,10 +104,9 @@ function newCard() {
 // Nu mai scriem la ultimul "else" conditia ca sum > 21, pentru ca avem deja conditii pentru
 //  sum === 21 si sum < 21, => daca cele doua conditii nu sunt indeplinite, clar sum > 21
 
-
-let player = {
-    playerName: "Mihai",
-    playerCash: "200$",
+function newGame() {
+     if (sum === 21 || sum > 21) {
+        startGame();
+        console.log("new game button pressed");
+    } 
 }
-
-playerStats.textContent = player.playerName + ": " + player.playerCash;
