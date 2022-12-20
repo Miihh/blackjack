@@ -1,5 +1,5 @@
-let firstCard = getRandomCard();
-let secondCard = getRandomCard();
+let firstCard = getRandomCard1();
+let secondCard = getRandomCard2();
 let drawnCards = [];
 let sum =  0;
 let blackjack = false;// in prima faza, playerul nu are blackjack, deci va fi false
@@ -41,7 +41,7 @@ function startGame() {
     newGameBtn.disabled = true;
 };
 // card randomizer - 
-function getRandomCard() {
+function getRandomCard1() {
     let randomGeneratedNumber = Math.floor(Math.random() * 11) + 1; //adaugam +1 ca sa inceapade la 1, nu de la 0
     if (randomGeneratedNumber > 10) {
         return  10;
@@ -51,6 +51,19 @@ function getRandomCard() {
         return randomGeneratedNumber;
     }
 } 
+
+function getRandomCard2() {
+    let randomGeneratedNumber = Math.floor(Math.random() * 11) + 2; //adaugam +1 ca sa inceapade la 1, nu de la 0
+    if (randomGeneratedNumber > 10) {
+        return  10;
+    }else if ( randomGeneratedNumber === 1) {
+        return  11;
+    } else  {
+        return randomGeneratedNumber;
+    }
+} 
+
+
 // stabilim logica jocului = daca genereaza un nr > 10=> 10( pt ca in bj, cartile din chinta = 10)
 //daca genereaza nr 1(adica AS) => ii dam valoarea de 11. Practic, va genera numere cuprinse intre 2-11
 
@@ -85,7 +98,7 @@ function renderGame() {
 }
 
 function newCard() {
-    let thirdCard = getRandomCard()
+    let thirdCard = getRandomCard1()
     if (stillInTheGame === true && blackjack === false) {
         newCardBtn.disabled= false;
         sum += thirdCard;
